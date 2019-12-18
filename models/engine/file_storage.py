@@ -35,7 +35,7 @@ class FileStorage:
                     newDict[key] = value
             return newDict
         else:
-            pass
+            return self.__objects
 
     def new(self, obj):
         """sets __object to given obj
@@ -77,5 +77,3 @@ class FileStorage:
             keyToDel = "{}.{}".format(name, id)
             if keyToDel in self.__objects:
                 del self.__objects[keyToDel]
-        else:
-            pass
