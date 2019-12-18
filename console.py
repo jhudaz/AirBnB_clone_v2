@@ -10,7 +10,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -43,6 +42,22 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
+
+            for i in range(1, len(my_list)):
+                data = my_list[i].split("=")
+                if data[1].isnumeric():
+                    setattr(obj, data[0], int(data[1]))
+                else:
+                    try:
+                        setattr(obj, data[0], float(data[1]))
+                    except ValueError:
+                        string = ""
+                        for ch in data[1]:
+                            if ch != '\"':
+                                string += ch
+                        cleanString = string.replace("_", " ")
+                        setattr(obj, data[0], cleanString)
+
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
