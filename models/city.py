@@ -13,7 +13,7 @@ class City(BaseModel, Base):
         state_id: The state id
         name: input name
     """
-    storage = os.environ.get("HBNB_TYPE_STORAGE")
+    storage = os.getenv("HBNB_TYPE_STORAGE")
     if storage == "db":
         __tablename__ = 'cities'
         state_id = Column(
