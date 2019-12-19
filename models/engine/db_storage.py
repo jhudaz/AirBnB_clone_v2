@@ -29,11 +29,11 @@ class DBStorage:
     def __init__(self):
         """ initialize the connection with the DB
         """
-        env = os.environ.get('HBNB_ENV')
-        user = os.environ.get('HBNB_MYSQL_USER')
-        passwd = os.environ.get('HBNB_MYSQL_PWD')
-        host = os.environ.get('HBNB_MYSQL_HOST')
-        db = os.environ.get('HBNB_MYSQL_DB')
+        env = os.getenv('HBNB_ENV')
+        user = os.getenv('HBNB_MYSQL_USER')
+        passwd = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST')
+        db = os.getenv('HBNB_MYSQL_DB')
         dialect = 'mysql'
         driver = 'mysqldb'
         config = '{}+{}://{}:{}@{}/{}'.format(
