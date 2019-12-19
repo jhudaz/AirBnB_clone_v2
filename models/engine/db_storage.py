@@ -58,17 +58,23 @@ class DBStorage:
         clsList = [State, City]
         if cls:
             data = self.__session.query(cls)
+            for obj in data:
+                name = type(obj).__name__
+                id = obj.id
+                key = "{}.{}".format(name, id)
+                objList[key] = obj
+            return objList
         else:
             for clss in clsList:
                 data = self.__session.query(clss)
 
-        for obj in data:
-            name = type(obj).__name__
-            id = obj.id
-            key = "{}.{}".format(name, id)
-            objList[key] = obj
+                for obj in data:
+                    name = type(obj).__name__
+                    id = obj.id
+                    key = "{}.{}".format(name, id)
+                    objList[key] = obj
 
-        return objList
+                return objList
 
     def new(self, obj):
         """ add a new record to the current session for the DB
