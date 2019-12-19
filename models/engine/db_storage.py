@@ -36,7 +36,6 @@ class DBStorage:
         db = os.environ.get('HBNB_MYSQL_DB')
         dialect = 'mysql'
         driver = 'mysqldb'
-        tStorage = os.environ.get('HBNB_TYPE_STORAGE')
         config = '{}+{}://{}:{}@{}/{}'.format(
             dialect,
             driver,
@@ -55,13 +54,21 @@ class DBStorage:
         Args:
             cls: class name
         """
-        data = {}
+        objList = {}
+        clsList = [State, City]
         if cls:
-            data = self.__session.query(type(cls).__name__)
+            data = self.__session.query(cls)
         else:
-            data = self.__session.query(
-                User, State, City, Amenity, Place, Review)
-        return {}
+            for clss in clsList:
+                data = self.__session.query(clss)
+
+        for obj in data:
+            name = type(obj).__name__
+            id = obj.id
+            key = "{}.{}".format(name, id)
+            objList[key] = obj
+
+        return objList
 
     def new(self, obj):
         """ add a new record to the current session for the DB
