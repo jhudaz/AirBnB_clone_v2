@@ -46,8 +46,8 @@ class DBStorage:
         )
         self.__engine = create_engine(config, pool_pre_ping=True)
 
-        if env == "test":
-            base.metadata.drop_all(bind=self.__engine)
+        if env == 'test':
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """ select all the objects from a class or all the classes
