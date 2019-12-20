@@ -4,6 +4,7 @@ import sqlalchemy
 import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -19,8 +20,9 @@ class City(BaseModel, Base):
         state_id = Column(
             String(60),
             ForeignKey("states.id"),
-            nullable=False, )
+            nullable=False)
         name = Column(String(128), nullable=False)
+        places = relationship("Place", cascade="delete", backref="cities")
     else:
         state_id = ""
         name = ""

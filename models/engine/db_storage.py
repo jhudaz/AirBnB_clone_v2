@@ -55,7 +55,7 @@ class DBStorage:
             cls: class name
         """
         objList = {}
-        clsList = ["State", "City", "User"]
+        clsList = ["State", "City", "User", "Place"]
         if cls:
             data = self.__session.query(cls)
             for obj in data:
