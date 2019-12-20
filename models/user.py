@@ -17,8 +17,8 @@ class User(BaseModel, Base):
         last_name: last name
     """
     storage = os.getenv("HBNB_TYPE_STORAGE")
+    __tablename__ = 'users'
     if storage == "db":
-        __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)

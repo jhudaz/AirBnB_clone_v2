@@ -2,10 +2,34 @@
 """This is the place class"""
 import sqlalchemy
 import os
+import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from models.amenity import Amenity
+from models.review import Review
+from models.state import State
+from sqlalchemy import Table, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+
+
+place_amenity = Table(
+    'place_amenity',
+    Base.metadata,
+    Column(
+        "place_id",
+        String(60),
+        ForeignKey("places.id"),
+        primary_key=True,
+        nullable=False
+    ),
+    Column(
+        "amenity_id",
+        String(60),
+        ForeignKey("amenities.id"),
+        primary_key=True,
+        nullable=False
+    )
+)
 
 
 class Place(BaseModel, Base):
@@ -23,9 +47,10 @@ class Place(BaseModel, Base):
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
+    __tablename__ = 'places'
     storage = os.getenv("HBNB_TYPE_STORAGE")
     if storage == "db":
-        __tablename__ = 'places'
+
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
         user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
         name = Column(String(128), nullable=False)
@@ -37,6 +62,11 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", cascade="delete", backref="place")
+        amenities = relationship(
+            "Amenity",
+            secondary=place_amenity,
+            backref="place_amenities",
+            viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -58,3 +88,13 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+
+        @property
+        def amenities(self):
+            return self.amenity_ids
+
+        @property
+        def amenities(self, obj=None):
+            name = type(obj).__name__
+            if obj and name == "Amenity":
+                self.amenity_ids.append(obj.id)
