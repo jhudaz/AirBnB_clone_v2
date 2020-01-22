@@ -57,7 +57,7 @@ class DBStorage:
         objList = {}
         clsList = ["State", "City", "User", "Place", "Review"]
         if cls:
-            data = self.__session.query(cls)
+            data = self.__session.query(eval(cls)).all()
             for obj in data:
                 name = type(obj).__name__
                 id = obj.id
