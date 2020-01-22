@@ -29,7 +29,7 @@ class FileStorage:
         """
         if cls:
             newDict = {}
-            className = cls.__name__
+            className = eval(cls).__name__
             for key, value in self.__objects.items():
                 if key.find(className) != -1:
                     newDict[key] = value
