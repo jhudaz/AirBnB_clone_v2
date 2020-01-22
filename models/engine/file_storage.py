@@ -77,3 +77,8 @@ class FileStorage:
             keyToDel = "{}.{}".format(name, id)
             if keyToDel in self.__objects:
                 del self.__objects[keyToDel]
+
+    def close(self):
+        """ call reload method
+        """
+        self.reload()
